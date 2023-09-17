@@ -62,7 +62,7 @@ pip install streamlit streamlit-lottie requests pycaret
 ### 3. Clone the Repository
 
 ```bash
-git clone 
+git clone https://github.com/nada-086/Your-Own-Package
 ```
 
 ### 4. Running the Project
