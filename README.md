@@ -52,7 +52,7 @@ This project is developed using Python. Make sure you have Python 3.10 installed
 ### 2. Required Libraries
 
 ```bash
-pip install streamlit streamlit-lottie requests pycaret
+pip install requirement.txt
 ```
 
 - [PyCaret](https://pycaret.org/): An open-source machine learning library for low-code automation.
