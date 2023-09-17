@@ -47,7 +47,7 @@ Before you can get started with this project, you'll need to ensure you have the
 
 ### 1. Python Environment
 
-This project is developed using Python. Make sure you have Python installed on your system. You can download Python from the official website: [Python Downloads](https://www.python.org/downloads/)
+This project is developed using Python. Make sure you have Python 3.10 installed on your system. You need to use this old version of python as PyCaret is only supported in python 3.8, 3.9. 3.10. You can download Python 3.10 from: [Python Downloads](https://www.python.org/downloads/release/python-3100/)
 
 ### 2. Required Libraries
 
