@@ -5,11 +5,12 @@ import modeling as ml
 import pandas as pd
 import seaborn as sns
 
-
 # Globals
 data = pd.DataFrame()
 original_data = pd.DataFrame()
 data_desc = pd.DataFrame()
+target = ''
+
 
 # Configuring The Web Page
 def load_lottie(url):
@@ -18,8 +19,10 @@ def load_lottie(url):
         return None
     return r.json()
 
+
 lottie_url = load_lottie("https://lottie.host/662e8f70-36c1-4ee1-a48b-df95b59e1a24/C1dqDyJanI.json")
-st.set_page_config(page_title="Your Own Package", page_icon="https://cdn-icons-png.flaticon.com/128/610/610128.png", layout="wide")
+st.set_page_config(page_title="Your Own Package", page_icon="https://cdn-icons-png.flaticon.com/128/610/610128.png",
+                   layout="wide")
 
 # Section of Information
 with st.container():
@@ -37,12 +40,11 @@ with st.container():
         file_path = st.text_input("Enter the File Path")
         try:
             original_data, data_desc = ml.reading_data(file_path)
-            data = original_data
         except Exception as e:
             print(e)
     with right_column:
         st_lottie(lottie_url, height=300, key="charts")
-    
+
 # Section Of Summarizing The Data
 with st.container():
     st.write('---')
@@ -53,8 +55,7 @@ with st.container():
         st.write(data_desc)
     with right_column:
         st.write('## Original Data')
-        st.write(data)
-
+        st.write(original_data)
 
 # Preprocessing The Data
 with st.container():
@@ -63,24 +64,21 @@ with st.container():
     left_column, right_column = st.columns(2)
     with left_column:
         encoder = st.selectbox("How to encode categorical data??", ['Label Encoder', 'OneHot Encoder'])
+        null_values = st.selectbox("How to deal with null values??", ['Remove Them', 'Use Imputer'])
     with right_column:
         scaler = st.selectbox('How to scale numerical data??', ['MinMax Scaler', 'Standard Scaler'])
-    chosen = st.multiselect('Choose the columns you want to drop', data.columns)
-    original_data = original_data.drop(chosen, axis=1)
-    if not data.empty:
-        data = ml.preprocess(data, encoder, scaler, chosen)
-        target = st.radio("Choose a column to predict", original_data.columns)
-    
+        chosen = st.multiselect('Choose the columns you want to drop', original_data.columns)
+    if not original_data.empty:
+        data = ml.preprocess(original_data, encoder, scaler, chosen, null_values)
+        target = st.radio("Choose a column to predict", data.columns)
 
 # Visualizing The Data
 with st.container():
     st.write('---')
     st.write('# Visualize Your Data')
-    if not (original_data.empty or target == '') and target in data.columns:
-        pairplot = sns.pairplot(original_data, hue=target)
+    if not (len(data.columns) <= 1 or target == '') and target in data.columns:
+        pairplot = sns.pairplot(data, hue=target)
         st.pyplot(pairplot)
-
-
 
 # After Preprocessing
 with st.container():
@@ -94,7 +92,6 @@ with st.container():
         with right_column:
             st.write("## Our New Data :smile:")
             st.write(data)
-
 
 # Modeling
 with st.container():
